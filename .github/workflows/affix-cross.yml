@@ -49,6 +49,7 @@ jobs:
           if-no-files-found: error
           name: 'test-output-${{ inputs.arch }}-${{ inputs.os }}-${{ inputs.perl }}${{ inputs.flags }}'
           path: 'test-output-${{ inputs.arch }}-${{ inputs.os }}-${{ inputs.perl }}${{ inputs.flags }}.txt'
+          continue-on-error: true
 name: bsd module
 on:
   workflow_call:
