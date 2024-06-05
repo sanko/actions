@@ -40,7 +40,7 @@ jobs:
           
           ~/perl5/perlbrew/perls/cache-${{ inputs.os }}-${{ inputs.perl }}${{ inputs.flags }}/bin/perl Build.PL
           
-          ./Build test --verbose
+          ./Build test --verbose --jobs=8
           
           command1_exit_code=$?
           if [ $command1_exit_code -eq 0 ]; then
