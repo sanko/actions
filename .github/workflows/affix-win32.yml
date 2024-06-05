@@ -21,7 +21,7 @@ jobs:
           
           perl Build.PL
           
-          ./Build test --verbose
+          ./Build test --verbose --jobs=8
           
           if ($LASTEXITCODE -eq 0) {
             perl -V > test-output-${{ inputs.os }}-${{ inputs.perl }}${{ inputs.flags }}.txt
