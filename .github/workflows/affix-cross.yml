@@ -28,7 +28,7 @@ jobs:
             curl -L https://cpanmin.us | sudo /usr/local/bin/perl${{inputs.perl}}${{ inputs.os == 'freebsd' && '.2' || ''}} - --notest App::cpanminus Module::Build::Tiny
             sudo cpanm --installdeps --notest .
             sudo /usr/local/bin/perl${{inputs.perl}}${{ inputs.os == 'freebsd' && '.2' || ''}} Build.PL
-            ./Build test --verbose
+            ./Build test --verbose --jobs=8
             command1_exit_code=$?
             # Check if the first command exited successfully (exit code 0)
             if [ $command1_exit_code -eq 0 ]; then
