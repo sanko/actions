@@ -9,7 +9,7 @@ jobs:
           AUTHOR_TESTING: 0
           AUTOMATED_TESTING: 1
         name: 'Test on ${{ inputs.os }}'
-        uses: cross-platform-actions/action@v0.24.0
+        uses: cross-platform-actions/action@v0.25.0
         with:
           architecture: '${{ inputs.arch }}'
           cpu_count: 4
@@ -23,7 +23,7 @@ jobs:
             ls -lah
             whoami
             env | sort
-            sudo ${{inputs.pkg}} perl${{inputs.perl}}${{ inputs.arch == 'x86-64' && ' devel/valgrind' || '' }}
+            sudo ${{inputs.pkg}} perl${{inputs.perl}}${{ inputs.arch == 'x86-64' && ' valgrind-devel' || '' }}
             /usr/local/bin/perl${{inputs.perl}}${{ inputs.os == 'freebsd' && '.2' }} -v
             curl -L https://cpanmin.us | sudo /usr/local/bin/perl${{inputs.perl}}${{ inputs.os == 'freebsd' && '.2' || ''}} - --notest App::cpanminus Module::Build::Tiny
             sudo cpanm --installdeps --notest .
