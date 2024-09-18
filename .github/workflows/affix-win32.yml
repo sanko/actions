@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Perl environment
-        uses: shogo82148/actions-setup-perl@v1.29.0
+        uses: shogo82148/actions-setup-perl@v1.31.3
         with:
           distribution: "${{ inputs.flags == '-Dusethreads' && 'strawberry' || 'default' }}"
           install-modules-args: --with-configure --installdeps --notest -v .
