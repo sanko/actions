@@ -1,0 +1,82 @@
+---
+jobs:
+  build:
+    name: "${{ inputs.toolchain }}-${{ inputs.arch }}"
+    runs-on: ${{ inputs.host == '' && inputs.os || inputs.host }}
+    concurrency:
+      group: >-
+        ${{ github.ref }}-${{ github.base_ref }}-${{ github.head_ref }}-${{ inputs.os }}-${{ inputs.arch }}-${{ inputs.toolchain }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+      - uses: cross-platform-actions/action@v0.25.0
+        if: ${{ inputs.host != '' }}
+        with:
+          architecture: '${{ inputs.arch }}'
+          cpu_count: 4
+          environment_variables: AUTHOR_TESTING AUTOMATED_TESTING
+          memory: 5G
+          operating_system: '${{ inputs.os }}'
+          run: |
+            uname -a
+            echo $SHELL
+            pwd
+            ls -lah
+            whoami
+            env | sort
+            sudo ${{inputs.pkg}} curl git gmake ${{ inputs.arch == 'x86_64' && ' valgrind-devel' || '' }}
+            git clone --recursive https://github.com/xmake-io/xmake.git
+            cd ./xmake
+            ./configure
+            gmake
+            ./scripts/get.sh __local__ __install_only__
+            /home/runner/.local/bin/xmake      --verbose --diagnosis --yes
+            /home/runner/.local/bin/xmake test --verbose --diagnosis --yes
+          shell: bash
+          version: '${{ inputs.version }}'
+      - uses: xmake-io/github-action-setup-xmake@v1
+        if: ${{ inputs.host == '' }}
+        with:
+          xmake-version: latest
+      - name: Install Ninja
+        if: ${{ inputs.toolchain == 'mingw' }}
+        uses: seanmiddleditch/gha-setup-ninja@v5
+      - name: Set Platform (https://github.com/xmake-io/xmake/issues/1121)
+        if: ${{ inputs.toolchain == 'mingw' }}
+        run: |
+          xmake config --plat=mingw --clean --verbose --diagnosis --yes
+      - name: Build
+        if: ${{ inputs.host == '' }}
+        run: |
+          xmake config --arch=${{ inputs.arch }} --toolchain=${{ inputs.toolchain }} --verbose --diagnosis --yes
+
+          xmake --verbose --diagnosis --yes
+      - name: Run tests
+        if: ${{ inputs.host == '' }}
+        run: |
+          xmake test --verbose --diagnosis --yes
+name: xmake module
+on:
+  workflow_call:
+    inputs:
+      arch:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      toolchain:
+        required: true
+        type: string
+      host:
+        required: false
+        type: string
+      pkg:
+        required: false
+        type: string
+      version:
+        required: false
+        type: string
