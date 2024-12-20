@@ -18,6 +18,8 @@ jobs:
           \curl -L https://install.perlbrew.pl | bash
           source ~/perl5/perlbrew/etc/bashrc
 
+          perlbrew self-upgrade
+          perlbrew install-patchperl
           perlbrew available
           perlbrew install-cpanm
 
