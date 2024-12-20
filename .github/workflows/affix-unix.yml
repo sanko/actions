@@ -22,6 +22,7 @@ jobs:
           perlbrew install-patchperl
           perlbrew available
           perlbrew install-cpanm
+          cpanm -n -v Devel::PatchPerl
 
           perlbrew install --switch --verbose --as cache-${{ inputs.os }}-${{ inputs.perl }}${{ inputs.flags }} -j 12 --notest --noman ${{ inputs.flags }} perl-${{ inputs.perl }}
       - name: Install prereqs
