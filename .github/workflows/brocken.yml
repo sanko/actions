@@ -12,7 +12,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: true
-      - uses: cross-platform-actions/action@v0.25.0
+      - uses: cross-platform-actions/action@v0.28.0
         if: ${{ inputs.host != '' }}
         with:
           architecture: '${{ inputs.arch }}'

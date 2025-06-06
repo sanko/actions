@@ -9,7 +9,7 @@ jobs:
           AUTHOR_TESTING: 0
           AUTOMATED_TESTING: 1
         name: 'Test on ${{ inputs.os }}'
-        uses: cross-platform-actions/action@v0.25.0
+        uses: cross-platform-actions/action@v0.28.0
         with:
           architecture: '${{ inputs.arch }}'
           cpu_count: 4
