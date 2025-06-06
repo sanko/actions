@@ -23,6 +23,7 @@ jobs:
             ls -lah
             whoami
             env | sort
+            ${{ inputs.setup }}
             sudo ${{inputs.pkg}} perl${{inputs.perl}}${{ inputs.arch == 'x86-64' && ' valgrind-devel' || '' }}
             /usr/local/bin/perl${{inputs.perl}}.${{ inputs.perl_subversion }} -v
             curl -L https://cpanmin.us | sudo /usr/local/bin/perl${{inputs.perl}}.${{ inputs.perl_subversion }} - --notest App::cpanminus Module::Build::Tiny
@@ -75,3 +76,7 @@ on:
       version:
         required: true
         type: string
+      setup:
+        required: false
+        type: string
+        default: ""
